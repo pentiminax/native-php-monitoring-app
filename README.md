@@ -1,1 +1,1 @@
-## NativePHP Monitoring app
+## NativePHP monitoring application
