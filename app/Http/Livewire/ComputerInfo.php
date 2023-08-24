@@ -48,32 +48,30 @@ class ComputerInfo extends Component
 
     private function getCpuPercentage(): void
     {
-        exec('wmic CPU get LoadPercentage 2>&1', $cpuPercentageOutput);
+        $cpuPercentage = shell_exec('powershell -command "Get-WmiObject -Class Win32_Processor | ForEach-Object { $_.LoadPercentage }"');
 
-        $this->cpuPercentage = intval($cpuPercentageOutput[1], 0) * $this->numberOfCores;
+        $this->cpuPercentage = intval($cpuPercentage, 0) * $this->numberOfCores;
     }
 
     private function getNumberOfCores(): void
     {
-        exec('wmic CPU get NumberOfCores 2>&1', $numberOfCoreOutput);
+        $numberOfLogicalProcessors = shell_exec('powershell -command "(Get-CimInstance Win32_Processor).NumberOfCores"');
 
-        $this->numberOfCores = $numberOfCoreOutput[1];
+        $this->numberOfCores = intval($numberOfLogicalProcessors,0);
     }
 
     private function getTotalMemory(): void
     {
-        exec('wmic ComputerSystem get TotalPhysicalMemory 2>&1', $totalMemoryOutput);
+        $totalMemory = shell_exec('powershell -command "(Get-WmiObject -Class Win32_ComputerSystem).TotalPhysicalMemory"');
 
-        $this->totalMemory = round($totalMemoryOutput[1] / 1024 / 1024 / 1024);
+        $this->totalMemory = round($totalMemory / 1024 / 1024 / 1024);
     }
 
     private function getUsedMemory(): void
     {
-        exec('wmic OS get FreePhysicalMemory 2>&1', $freeMemoryOutput);
+        $freeMemory = shell_exec('powershell -command "(Get-WmiObject -Class Win32_OperatingSystem).FreePhysicalMemory"');
 
-        $freeMemory = round($freeMemoryOutput[1] / 1024 / 1024, 2);
-
-        $this->usedMemory = $this->totalMemory - $freeMemory;
+        $this->usedMemory = $this->totalMemory - round($freeMemory / 1024 / 1024, 2);
     }
 
     private function isMemoryLow(): bool
