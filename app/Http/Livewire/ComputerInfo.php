@@ -65,7 +65,7 @@ class ComputerInfo extends Component
 
         $freeMemory = round($freeMemoryOutput[1] / 1024 / 1024, 2);
 
-        $this->usedMemory = $freeMemory;
+        $this->usedMemory = $this->totalMemory - $freeMemory;
     }
 
     private function isMemoryLow(): bool
