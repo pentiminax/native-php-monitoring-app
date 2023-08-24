@@ -48,14 +48,14 @@ class ComputerInfo extends Component
 
     private function getCpuPercentage(): void
     {
-        exec('wmic cpu get LoadPercentage 2>&1', $cpuPercentageOutput);
+        exec('wmic CPU get LoadPercentage 2>&1', $cpuPercentageOutput);
 
         $this->cpuPercentage = intval($cpuPercentageOutput[1], 0) * $this->numberOfCores;
     }
 
     private function getNumberOfCores(): void
     {
-        exec('wmic cpu get NumberOfCores 2>&1', $numberOfCoreOutput);
+        exec('wmic CPU get NumberOfCores 2>&1', $numberOfCoreOutput);
 
         $this->numberOfCores = $numberOfCoreOutput[1];
     }
