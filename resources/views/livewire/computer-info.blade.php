@@ -1,4 +1,4 @@
-<div class="row" wire:poll.1500ms="getComputerInfo">
+<div class="row" wire:poll.2000ms="getComputerInfo">
     <div class="col mb-3">
         <div class="card text-center">
             <div class="card-header">Mémoire</div>
