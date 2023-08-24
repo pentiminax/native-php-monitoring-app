@@ -10,7 +10,7 @@
         @livewireStyles
     </head>
     <body>
-        <div id="container" class="container mt-5">
+        <div class="container mt-5">
             <livewire:computer-info />
         </div>
 
