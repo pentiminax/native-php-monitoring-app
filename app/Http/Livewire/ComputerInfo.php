@@ -8,10 +8,10 @@ use Native\Laravel\Notification;
 
 class ComputerInfo extends Component
 {
-    public $cpuPercentage = 0;
-    public $usedMemory = 0;
-    public $totalMemory = 0;
-
+    public int $cpuPercentage = 0;
+    public float $usedMemory = 0;
+    public float $totalMemory = 0;
+    public int $numberOfCores = 0;
 
     public function mount(): void
     {
@@ -19,6 +19,7 @@ class ComputerInfo extends Component
             return;
         }
 
+        $this->getNumberOfCores();
         $this->getComputerInfo();
     }
 
@@ -49,7 +50,14 @@ class ComputerInfo extends Component
     {
         exec('wmic cpu get LoadPercentage 2>&1', $cpuPercentageOutput);
 
-        $this->cpuPercentage = $cpuPercentageOutput[1];
+        $this->cpuPercentage = intval($cpuPercentageOutput[1], 0) * $this->numberOfCores;
+    }
+
+    private function getNumberOfCores(): void
+    {
+        exec('wmic cpu get NumberOfCores 2>&1', $numberOfCoreOutput);
+
+        $this->numberOfCores = $numberOfCoreOutput[1];
     }
 
     private function getTotalMemory(): void
