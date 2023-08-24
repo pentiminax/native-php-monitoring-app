@@ -15,6 +15,10 @@ class ComputerInfo extends Component
 
     public function mount(): void
     {
+        if (PHP_OS_FAMILY !== 'Windows') {
+            return;
+        }
+
         $this->getComputerInfo();
     }
 
@@ -25,6 +29,10 @@ class ComputerInfo extends Component
 
     public function getComputerInfo(): void
     {
+        if (PHP_OS_FAMILY !== 'Windows') {
+            return;
+        }
+
         $this->getCpuPercentage();
         $this->getTotalMemory();
         $this->getUsedMemory();
@@ -53,11 +61,11 @@ class ComputerInfo extends Component
 
     private function getUsedMemory(): void
     {
-        exec('wmic OS get FreePhysicalMemory 2>&1', $freeMemoryOutput );
+        exec('wmic OS get FreePhysicalMemory 2>&1', $freeMemoryOutput);
 
         $freeMemory = round($freeMemoryOutput[1] / 1024 / 1024, 2);
 
-        $this->usedMemory = $this->totalMemory - $freeMemory;
+        $this->usedMemory = $freeMemory;
     }
 
     private function isMemoryLow(): bool
